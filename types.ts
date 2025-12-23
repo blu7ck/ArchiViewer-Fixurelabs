@@ -1,5 +1,3 @@
-import React from 'react';
-
 export type ItemType = 'room' | 'furniture' | 'structure';
 
 export interface Hotspot {
@@ -25,26 +23,4 @@ export interface BuildingModel {
 export interface ARSessionState {
   isActive: boolean;
   modelId: string | null;
-}
-
-declare global {
-  namespace JSX {
-    interface IntrinsicElements {
-      'model-viewer': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> & {
-        src?: string;
-        alt?: string;
-        ar?: boolean;
-        'ar-modes'?: string;
-        'camera-controls'?: boolean;
-        'auto-rotate'?: boolean;
-        autoplay?: boolean;
-        'animation-name'?: string;
-        'interaction-prompt'?: string;
-        'shadow-intensity'?: string;
-        'environment-image'?: string;
-        'ios-src'?: string;
-        [key: string]: any;
-      };
-    }
-  }
 }

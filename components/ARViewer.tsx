@@ -1,6 +1,28 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { BuildingModel } from '../types';
-import { RotateCcw, Camera, AlertTriangle, RefreshCw } from 'lucide-react';
+import { RotateCcw, Camera, AlertTriangle, RefreshCw, Lock, Unlock } from 'lucide-react';
+
+declare global {
+  namespace JSX {
+    interface IntrinsicElements {
+      'model-viewer': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> & {
+        src?: string;
+        alt?: string;
+        ar?: boolean;
+        'ar-modes'?: string;
+        'camera-controls'?: boolean;
+        'auto-rotate'?: boolean;
+        autoplay?: boolean;
+        'animation-name'?: string;
+        'interaction-prompt'?: string;
+        'shadow-intensity'?: string;
+        'environment-image'?: string;
+        'ios-src'?: string;
+        [key: string]: any;
+      };
+    }
+  }
+}
 
 interface ARViewerProps {
   model: BuildingModel;
@@ -11,6 +33,7 @@ export const ARViewer: React.FC<ARViewerProps> = ({ model, environmentImage = 'n
   const [loading, setLoading] = useState(true);
   const [progress, setProgress] = useState(0);
   const [error, setError] = useState<string | null>(null);
+  const [isLocked, setIsLocked] = useState(false);
   
   const modelViewerRef = useRef<HTMLElement>(null);
 
@@ -19,6 +42,7 @@ export const ARViewer: React.FC<ARViewerProps> = ({ model, environmentImage = 'n
     setLoading(true);
     setProgress(0);
     setError(null);
+    setIsLocked(false);
     
     const viewer = modelViewerRef.current;
     
@@ -109,15 +133,18 @@ export const ARViewer: React.FC<ARViewerProps> = ({ model, environmentImage = 'n
         alt={model.name}
         ar={true}
         ar-modes="scene-viewer webxr quick-look" 
-        camera-controls={true}
+        camera-controls={!isLocked}
         auto-rotate={false}
         autoplay={true} 
-        animation-name="Run" // Default animation play
+        animation-name="Run"
         interaction-prompt="none"
         shadow-intensity="1.5"
         environment-image={environmentImage}
         className="w-full h-full focus:outline-none"
       >
+        {/* Hidden slot to suppress the default AR button and prevent overlap */}
+        <div slot="ar-button" style={{ display: 'none' }}></div>
+        
         <div slot="ar-prompt" className="absolute top-4 left-1/2 -translate-x-1/2 bg-black/50 backdrop-blur px-4 py-2 rounded-full text-white text-sm">
            Move device to find surface
         </div>
@@ -126,7 +153,7 @@ export const ARViewer: React.FC<ARViewerProps> = ({ model, environmentImage = 'n
       {/* --- BOTTOM CONTROLS --- */}
       <div className="absolute bottom-8 left-4 right-4 z-20 flex justify-between items-end pointer-events-none">
          
-         {/* Left: View Controls */}
+         {/* Left: Screenshot */}
          <div className="flex flex-col gap-2 pointer-events-auto">
              <button 
                 onClick={takeScreenshot}
@@ -137,17 +164,33 @@ export const ARViewer: React.FC<ARViewerProps> = ({ model, environmentImage = 'n
              </button>
          </div>
 
-         {/* Right: Reset */}
-         <div className="pointer-events-auto">
+         {/* Right: Tools Stack */}
+         <div className="flex flex-col gap-3 pointer-events-auto">
+            {/* Lock / Unlock */}
+            <button 
+                onClick={() => setIsLocked(!isLocked)}
+                className={`w-12 h-12 rounded-full flex items-center justify-center shadow-lg border active:scale-95 transition-all ${
+                  isLocked 
+                    ? 'bg-indigo-600 text-white border-indigo-600 hover:bg-indigo-700' 
+                    : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'
+                }`}
+                title={isLocked ? "Unlock View" : "Lock View"}
+            >
+                {isLocked ? <Lock className="w-5 h-5" /> : <Unlock className="w-5 h-5" />}
+            </button>
+
+            {/* Reset */}
             <button 
                 onClick={() => {
                     const viewer = modelViewerRef.current as any;
                     if (viewer) {
                         viewer.cameraOrbit = '45deg 55deg 105%';
                         viewer.jumpCameraToGoal();
+                        setIsLocked(false);
                     }
                 }}
                 className="w-12 h-12 bg-white text-slate-700 rounded-full flex items-center justify-center shadow-lg border border-slate-200 hover:bg-slate-50 active:scale-95 transition-all"
+                title="Reset View"
             >
                 <RotateCcw className="w-5 h-5" />
             </button>
