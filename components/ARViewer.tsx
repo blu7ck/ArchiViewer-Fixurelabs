@@ -1,25 +1,11 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { BuildingModel } from '../types';
-import { RotateCcw, Camera, AlertTriangle, RefreshCw, Lock, Unlock } from 'lucide-react';
+import { RotateCcw, Camera, AlertTriangle, RefreshCw, Lock, Unlock, Box } from 'lucide-react';
 
 declare global {
   namespace JSX {
     interface IntrinsicElements {
-      'model-viewer': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> & {
-        src?: string;
-        alt?: string;
-        ar?: boolean;
-        'ar-modes'?: string;
-        'camera-controls'?: boolean;
-        'auto-rotate'?: boolean;
-        autoplay?: boolean;
-        'animation-name'?: string;
-        'interaction-prompt'?: string;
-        'shadow-intensity'?: string;
-        'environment-image'?: string;
-        'ios-src'?: string;
-        [key: string]: any;
-      };
+      'model-viewer': any;
     }
   }
 }
@@ -142,7 +128,7 @@ export const ARViewer: React.FC<ARViewerProps> = ({ model, environmentImage = 'n
         environment-image={environmentImage}
         className="w-full h-full focus:outline-none"
       >
-        {/* Hidden slot to suppress the default AR button and prevent overlap */}
+        {/* Hidden slot to suppress the default AR button so we can use our custom one */}
         <div slot="ar-button" style={{ display: 'none' }}></div>
         
         <div slot="ar-prompt" className="absolute top-4 left-1/2 -translate-x-1/2 bg-black/50 backdrop-blur px-4 py-2 rounded-full text-white text-sm">
@@ -166,12 +152,25 @@ export const ARViewer: React.FC<ARViewerProps> = ({ model, environmentImage = 'n
 
          {/* Right: Tools Stack */}
          <div className="flex flex-col gap-3 pointer-events-auto">
+            
+            {/* View in AR (Primary Action) */}
+            <button 
+                onClick={() => {
+                  const viewer = modelViewerRef.current as any;
+                  if (viewer) viewer.activateAR();
+                }}
+                className="w-12 h-12 bg-indigo-600 text-white rounded-full flex items-center justify-center shadow-lg border border-indigo-500 hover:bg-indigo-700 active:scale-95 transition-all"
+                title="View in AR"
+            >
+                <Box className="w-5 h-5" />
+            </button>
+
             {/* Lock / Unlock */}
             <button 
                 onClick={() => setIsLocked(!isLocked)}
                 className={`w-12 h-12 rounded-full flex items-center justify-center shadow-lg border active:scale-95 transition-all ${
                   isLocked 
-                    ? 'bg-indigo-600 text-white border-indigo-600 hover:bg-indigo-700' 
+                    ? 'bg-slate-800 text-white border-slate-800 hover:bg-black' 
                     : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'
                 }`}
                 title={isLocked ? "Unlock View" : "Lock View"}

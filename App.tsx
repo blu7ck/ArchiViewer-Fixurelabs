@@ -33,7 +33,7 @@ const App: React.FC = () => {
           <div className="bg-white/90 backdrop-blur-md px-4 py-2 rounded-full shadow-sm border border-white/20 flex items-center gap-2">
             <Cuboid className="w-5 h-5 text-indigo-600" />
             <h1 className="text-sm font-bold tracking-tight text-slate-800">
-              ArchiView <span className="text-indigo-600">AR</span>
+              ArchiViewer
             </h1>
           </div>
 

@@ -1,5 +1,5 @@
 {
-  "name": "ArchiViewer AR",
+  "name": "ArchiViewer",
   "description": "Cross-platform Augmented Reality viewer for architectural models with QR access and 6DoF interaction.",
   "requestFramePermissions": [
     "camera"
