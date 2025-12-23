@@ -1,24 +1,37 @@
 import { BuildingModel } from './types';
 
-// Using high-quality reliable models for demonstration. 
-// In a real scenario, these would be the user's specific GLB architecture files.
-// We use the Astronaut as a placeholder for "Building" because it is a known good GLB that works universally for testing AR logic.
-// For the second model, we use a damaged helmet which has complex textures.
+// We are using the Astronaut model as a proxy for a 2-story building.
+// The "Visor/Head" represents the 2nd Floor (Penthouse).
+// The "Body/Backpack" represents the 1st Floor (Living Area).
 
 export const SAMPLE_MODELS: BuildingModel[] = [
   {
-    id: 'bldg-001',
-    name: 'Modern Office Complex',
-    description: 'A multi-story commercial building with glass facade. Features open-plan interiors and rooftop garden access.',
-    // Using a reliable GLB from Google's model-viewer assets for stability
+    id: 'apt-complex-01',
+    name: 'Dublex Apartment',
+    description: 'Modern 2-story unit with open plan living.',
     src: 'https://modelviewer.dev/shared-assets/models/Astronaut.glb', 
-    previewImage: 'https://picsum.photos/id/1/400/300',
+    iosSrc: 'https://modelviewer.dev/shared-assets/models/Astronaut.usdz',
+    previewImage: 'https://picsum.photos/id/188/400/300',
+    hotspots: []
   },
   {
-    id: 'bldg-002',
-    name: 'Historical Villa Restoration',
-    description: '19th-century villa digital twin. Showing proposed restoration of the eastern wing and landscape integration.',
+    id: 'studio-01',
+    name: 'Compact Studio',
+    description: 'Efficient studio layout optimization.',
     src: 'https://modelviewer.dev/shared-assets/models/RobotExpressive.glb',
-    previewImage: 'https://picsum.photos/id/12/400/300',
+    iosSrc: 'https://modelviewer.dev/shared-assets/models/RobotExpressive.usdz',
+    previewImage: 'https://picsum.photos/id/237/400/300',
+    hotspots: []
+  },
+  {
+    id: 'garden-villa',
+    name: 'Garden Villa & Surroundings',
+    description: 'Animated scene: A detached house with a water fountain, passing pedestrians, a cat, and moving traffic.',
+    // Using RobotExpressive again as a reliable placeholder for an animated GLB since ToyCar was not found.
+    // In a real production scenario, this URL would point to the custom "Garden House" GLB file.
+    src: 'https://modelviewer.dev/shared-assets/models/RobotExpressive.glb',
+    iosSrc: 'https://modelviewer.dev/shared-assets/models/RobotExpressive.usdz',
+    previewImage: 'https://picsum.photos/id/10/400/300',
+    hotspots: []
   }
 ];

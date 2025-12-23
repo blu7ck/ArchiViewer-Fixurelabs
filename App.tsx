@@ -20,7 +20,9 @@ const App: React.FC = () => {
       
       {/* 1. Main Viewer Layer */}
       <div className="absolute inset-0 z-0">
-        <ARViewer model={selectedModel} />
+        <ARViewer 
+          model={selectedModel} 
+        />
       </div>
 
       {/* 2. Top Navigation Overlay */}
@@ -94,14 +96,6 @@ const App: React.FC = () => {
                   )}
                 </button>
               ))}
-          </div>
-
-          {/* Selected Model Details Footer */}
-          <div className="p-5 bg-white/50 border-t border-indigo-50 backdrop-blur-sm">
-             <div className="text-xs font-bold text-indigo-600 mb-1 uppercase tracking-wider">Current Selection</div>
-             <p className="text-xs text-slate-600 leading-relaxed line-clamp-3">
-                {selectedModel.description}
-             </p>
           </div>
         </div>
       </div>
