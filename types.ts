@@ -10,6 +10,12 @@ export interface Hotspot {
   description?: string;
 }
 
+export interface Floor {
+  id: string;
+  name: string;
+  cameraTarget: string; // "x y z" to focus camera on this floor height
+}
+
 export interface BuildingModel {
   id: string;
   name: string;
@@ -18,6 +24,7 @@ export interface BuildingModel {
   iosSrc?: string; // Optional URL to USDZ for faster iOS loading
   previewImage: string;
   hotspots?: Hotspot[];
+  floors?: Floor[];
 }
 
 export interface ARSessionState {
